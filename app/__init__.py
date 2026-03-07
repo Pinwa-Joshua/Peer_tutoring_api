@@ -2,11 +2,13 @@ from flask import Flask
 from .config import Config
 from .database import db, migrate
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 
 jwt = JWTManager()
 
 def create_app():
     app= Flask(__name__)
+    CORS(app) # Enable CORS for all routes so the React frontend can communicate with it
     app.config.from_object(Config)
 
     db.init_app(app)
