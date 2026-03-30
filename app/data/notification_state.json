@@ -1,0 +1,16 @@
+{
+  "4": {
+    "read_ids": [
+      "message-1",
+      "message-3",
+      "message-4",
+      "session-3"
+    ]
+  },
+  "5": {
+    "read_ids": [
+      "message-2",
+      "session-3"
+    ]
+  }
+}

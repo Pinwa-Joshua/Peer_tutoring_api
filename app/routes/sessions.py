@@ -93,8 +93,11 @@ def get_sessions():
     return jsonify(results), 200
 
 
-@sessions_bp.route('/create', methods=['POST'])
+@sessions_bp.route('/create', methods=['OPTIONS', 'POST'])
 def create_session():
+    if request.method == 'OPTIONS':
+        return jsonify({}), 200
+
     user_id = get_current_user_from_request()
     if not user_id:
         return jsonify({"message": "Unauthorized"}), 401
@@ -135,8 +138,11 @@ def create_session():
     }), 201
 
 
-@sessions_bp.route('/<int:id>/<action>', methods=['POST'])
+@sessions_bp.route('/<int:id>/<action>', methods=['OPTIONS', 'POST'])
 def update_session(id, action):
+    if request.method == 'OPTIONS':
+        return jsonify({}), 200
+
     user_id = get_current_user_from_request()
     session = Session.query.get(id)
     if not session or session.tutor_id != user_id:
@@ -153,6 +159,8 @@ def update_session(id, action):
         session_detail['rejectReason'] = reject_reason
         details[str(id)] = session_detail
         save_session_details(details)
+    elif action == 'complete':
+        session.status = 'completed'
     else:
         return jsonify({"message": "Invalid action"}), 400
 

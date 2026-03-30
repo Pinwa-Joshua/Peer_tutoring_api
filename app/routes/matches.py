@@ -33,8 +33,11 @@ def my_sessions():
     } for s in sessions]
     return jsonify(result)
 
-@matches_bp.route("/recommend", methods=["POST"])
+@matches_bp.route("/recommend", methods=["OPTIONS", "POST"])
 def recommend_tutor():
+    if request.method == "OPTIONS":
+        return jsonify({}), 200
+        
     from ..models import TutorProfile, User
     data = request.get_json() or {}
     subject_query = (data.get("subject") or "").strip().lower()
